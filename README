@@ -1,0 +1,9 @@
+Simple Lightbox based on Prototype framework, but going to be harder and stronger.
+Later I'll add here some basic manuals.
+
+Here is the easiest way to use it
+*	new lightbox('<h1>Hello, it's me</h1>'); *
+
+Try demo option
+*	new lightbox($('.b-hidden_for_lightbox__dnone'), { hDesign:true; }); *
+
