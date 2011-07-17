@@ -142,7 +142,7 @@ var lightboxMaster = function(op) {
 	//
 	if (!h.op.dontCloseOnEsc) {
 		Event.observe(document, 'keyup', function (e) {
-			if (e.keyCode === 27 && h.boxes[h.ol].isOpened()) {
+			if (h.boxes[h.ol] && e.keyCode === 27 && h.boxes[h.ol].isOpened()) {
 				h.boxes[h.ol].close();
 			}
 		});
