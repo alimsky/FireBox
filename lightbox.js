@@ -89,7 +89,7 @@ var lightboxMaster = function(op) {
 		h.uf();
 	}.bind(h));
 
-	h.rf = function (){
+	h.rf = function (){ // Refresh the fader position
 		h.fa.setStyle({ // our fader need position too...
 			left: 0,
 			top: 0,
@@ -106,11 +106,11 @@ var lightboxMaster = function(op) {
 	Event.observe(window, 'resize', h.rf);
 
 	//hello
-	h.fd = function (){
+	h.fd = function (){ //Fade
 		if (h.ff) {
 			return;
 		}
-		h.ff=true;
+		h.ff=true; //Faded==true
 
 		h.rf();
 
@@ -120,11 +120,11 @@ var lightboxMaster = function(op) {
 		});
 	};
 
-	h.uf = function (){
+	h.uf = function (){ //Unfade
 		if (h.ol > 0) {
 			return;
 		}
-		h.ff=false;
+		h.ff=false; //Faded
 		Effect.Fade (h.fa, h.op.hideOptions);
 
 		if (h.ls) { //Hide loader if it didn't hidden yet
@@ -290,7 +290,7 @@ var lightbox = function (xdata, op) {
 		}
 	};
 
-	h.isOpened = function () {
+	h.isOpened = function () { // is this lightbox opened
 		if (h.fb.style.display !== 'none') {
 			return true;
 		}
@@ -389,8 +389,7 @@ var lightbox = function (xdata, op) {
 		});
 	}
 
-	h.bc();
-
+	h.bc(); //BIND CONTROLS, WHAR ARE YOU WAITING FOR!!11??
 
 	// Show right after class definition
 	//
@@ -400,4 +399,3 @@ var lightbox = function (xdata, op) {
 
 	return h;
 };
-
