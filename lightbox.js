@@ -1,9 +1,19 @@
 //
-// Oggetto Lightbox
-// Copyright 2011 Oggetto Web
+// Firebox
 //
-
-// @m boolean; rewrite values or not
+// Copyright 2011 alimsky@oggettoweb.com
+//
+// https://github.com/alimsky/FireBox/
+//
+// What is LOVE? Baby don't hurt me.
+// Don't hurt me... No more.
+// ______ _          ____            _ __ __ 
+//|  ____(_)        |  _ \          | /_ /_ |
+//| |__   _ _ __ ___| |_) | _____  _| || || |
+//|  __| | | '__/ _ \  _ < / _ \ \/ / || || |
+//| |    | | | |  __/ |_) | (_) >  <|_|| || |
+//|_|    |_|_|  \___|____/ \___/_/\_(_)|_||_|
+// 
 //
 var merge = function (a, b, m) {
 	"use strict";
