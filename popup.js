@@ -118,10 +118,10 @@ var popupHang = function() {
 		t.w = f.getWidth();
 		t.h = f.getHeight();
 
-		t.gw = g.getWidth();
-		t.gh = g.getHeight();
-		t.gx = g.cumulativeOffset()[0];
-		t.gy = g.cumulativeOffset()[1];
+		t.gw = p.getWidth();
+		t.gh = p.getHeight();
+		t.gx = p.cumulativeOffset()[0];
+		t.gy = p.cumulativeOffset()[1];
 
 		f.style.zIndex = 10001;
 
