@@ -254,7 +254,7 @@ var lightbox = function (xdata, op) {
 	};
 
 	if (!Effect) {
-		h.setOption('noEffects', false);
+		h.setOption('noEffects', true);
 	}
 
 	h.toggle = function () { //Toggle show
@@ -325,10 +325,13 @@ var lightbox = function (xdata, op) {
 			position: 'absolute'
 		});
 
+		t.olddisplay = f.style.display;
+
 		f.style.display = 'block'; //Sorry for reflow, bitch
 		t.w = f.getWidth();
 		t.h = f.getHeight();
-		f.style.display = 'none';
+
+		f.style.display = t.olddisplay;
 
 		f.style.zIndex = 10001;
 
