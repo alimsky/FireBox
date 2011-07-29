@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>FireBox polygon</title>
+	<script type="text/javascript" src="prototype.js"></script>
+	<script type="text/javascript" src="popup.js"></script>
+	<script type="text/javascript" src="scriptaculous/scriptaculous.js"></script>
+	<style type="text/css">
+	
+		.oggetto-lightbox-fade {
+			background:#000;
+		}
+
+		#g { 
+			position:absolute;
+			top:400px;
+			left:50%;
+			width:300px;
+			line-height:200px;
+			height:300px;
+		}
+
+		.danechka { 
+			position:relative;
+			left:50px;
+			top:-50px;
+			padding:100px;
+		}
+	
+	</style>
+</head>
+<body style="background:#ccc;">
+<p class="danechka">
+
+	<input type="button" value="open" id="g" />
+
+</p>
+	<script type="text/javascript">
+		popup($('g'), '<div><h1>Popup</h1></div>');
+	</script>
+</body>
+</html>
