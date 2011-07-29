@@ -48,8 +48,9 @@ var popupHang = function() {
 			distance: 10,
 			wrapperClassName:'oggetto-popup',
 			positionMode:'right-center',
-			hDesign:true,
-			duration:1
+			hDesign:false,
+			duration:0.7,
+			moveDistance:100
 		},
 		ç, // two little iterators
 		π, // ...
@@ -123,7 +124,7 @@ var popupHang = function() {
 		t.gx = p.cumulativeOffset()[0];
 		t.gy = p.cumulativeOffset()[1];
 
-		f.style.zIndex = 10001;
+		f.style.zIndex = 10101;
 
 		switch (m) {
 			case 'right-center':
@@ -145,7 +146,7 @@ var popupHang = function() {
 	p.removePopup = function(){ 
 		new Effect.Fade(h.fb, { duration:(h.op.duration/4) });
 		new Effect.Move(h.fb, {
-			x: 200, y: 0, mode: 'relative',
+			x: h.op.moveDistance, y: 0, mode: 'relative',
 		    duration:h.op.duration,
 			transition: Effect.Transitions.spring,
 			afterFinish:function() {
@@ -156,10 +157,10 @@ var popupHang = function() {
 
 	h.sp();
 
-	new Effect.Move(h.fb, { x:-200, mode:'relative', duration:0.01, afterFinish:function(){ 
+	new Effect.Move(h.fb, { x:-h.op.moveDistance, mode:'relative', duration:0.01, afterFinish:function(){ 
 		new Effect.Appear(h.fb, { duration:h.op.duration });
 		new Effect.Move(h.fb, {
-		  x: 200, y: 0, mode: 'relative',
+		  x: h.op.moveDistance, y: 0, mode: 'relative',
 		  duration:h.op.duration,
 		  transition: Effect.Transitions.sinoidal
 		});
