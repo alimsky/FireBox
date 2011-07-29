@@ -162,7 +162,7 @@ var lightboxMaster = function(op) {
 };
 
 //GLOBAL SCOPE ATTACK ATTENTIOOON!!!111
-Event.observe(window, 'dom:loaded', function(){
+Event.observe(document, 'dom:loaded', function(){
 	window.lightboxMasterGlobal = new lightboxMaster();
 });
 
