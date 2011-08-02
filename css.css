@@ -1,12 +1,8 @@
-select { 
-position:absolute;
-left:-100px;
- }
 		.fireselect-container { 
 			display:inline-block;
 			position:relative;
 		 }
-		ul { 
+		.fireselect-container ul { 
 			list-style:none;
 			padding:0;
 			border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px; -o-border-radius:5px;
@@ -14,17 +10,19 @@ left:-100px;
 			border:1px solid #aaa;
 			background-color:#fff;
 			max-width:480px;
+			margin-left:0;
 		 }
-		 a,
-		 ul li { 
+		 .fireselect-container a { position:absolute; top:-1px; left:1px;  }
+		 .fireselect-container a,
+		 .fireselect-container ul li { 
 			 cursor:pointer;
 			 padding:5px;
 			 position:relative;
 		 }
-		 .current { 
+		 .fireselect-container .current { 
 			font-weight:bold;
 		 }
-		.over { 
+		.fireselect-container .over { 
 			border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px; -o-border-radius:5px;
 			background-color:yellow;
 		 }
