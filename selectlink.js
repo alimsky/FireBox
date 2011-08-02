@@ -50,12 +50,10 @@ var linkDropDown = function(select, options) {
 	if(!h.select || (h.select.tagName.toUpperCase() !=='SELECT')) { 
 		return;
 	 }
-/*
 	h.select.setStyle({ 
 		position:'absolute',
 		top:'-150000px'
-	 })
-	 */
+	 });
 	html='<div class="fireselect-container">';
 	html= html + '<a href="javascript:;" class="' + h.op.linkClass + '">' + h.select[h.select.selectedIndex].innerHTML + '</a>';
 	html=html + '<ul style="display:none;">';
@@ -77,6 +75,12 @@ var linkDropDown = function(select, options) {
 	ul = ddiv.select('ul')[0];
 	lis = ddiv.select('ul li');
 
+	ddiv.setStyle({ 
+		position:'relative'
+	 })
+	h.anc.setStyle({ 
+		position:'absolute'
+	 })
 	ul.setStyle({ 
 		position:'absolute'
 	 });
@@ -97,10 +101,11 @@ var linkDropDown = function(select, options) {
 		t['y'] = t['obj'].positionedOffset()[1];
 		t['h'] = t['obj'].getHeight();
 		t['p'] = parseInt(t['obj'].getStyle('padding-top'), 10);
+		t['lp'] = parseInt(t['obj'].getStyle('padding-left'), 10)+1;
 		ul.setStyle({ 
 			display:'none',
-			left:'0',
-			top:'-'+(t['y'] + t['h'] - t['p'])+'px'
+			left:'-'+t['lp']+'px',
+			top:'-'+(t['y']/* + t['h']*/ + t['p'])+'px'
 		 });
 	}
 
