@@ -40,7 +40,9 @@ var popup = function (e, xdata, options) {
 		e.removePopup()
 	});
 }
-
+var popupGlobal = {
+	z:10100
+}
 var popupHang = function() {
 	var h  = { },  // OLOLO, dont touch it please
 		dO = { 
@@ -48,8 +50,10 @@ var popupHang = function() {
 			distance: 10,
 			wrapperClassName:'oggetto-popup',
 			positionMode:'right-center',
-			hDesign:true,
-			duration:1
+			hDesign:false,
+			duration:0.4,
+			hideTimeout:400,
+			moveDistance:40
 		},
 		ç, // two little iterators
 		π, // ...
@@ -59,6 +63,11 @@ var popupHang = function() {
 		xdata = this.xd,
 		ddiv; // little DOM shit
 	
+	if(p.tc) { 
+		clearInterval(p.tc);
+		return;
+	}
+
 	//init options
 	h.op = op || { };		
 	h.op = merge(h.op, dO, true);
@@ -82,7 +91,6 @@ var popupHang = function() {
 			return false;
 		}
 	}
-
 
 	h.go = function () { // Get option
 		return h.op;
@@ -123,7 +131,7 @@ var popupHang = function() {
 		t.gx = p.cumulativeOffset()[0];
 		t.gy = p.cumulativeOffset()[1];
 
-		f.style.zIndex = 10001;
+		f.style.zIndex = ++popupGlobal.z;
 
 		switch (m) {
 			case 'right-center':
@@ -143,27 +151,43 @@ var popupHang = function() {
 	};
 
 	p.removePopup = function(){ 
-		new Effect.Fade(h.fb, { duration:(h.op.duration/4) });
-		new Effect.Move(h.fb, {
-			x: 200, y: 0, mode: 'relative',
-		    duration:h.op.duration,
-			transition: Effect.Transitions.spring,
-			afterFinish:function() {
-				Element.remove(h.fb);
-			}
-		});
+		p.tc = setTimeout(function() {
+			/* WARNING: DESTRUCT */
+			delete p.tc;
+			new Effect.Fade(h.fb, { duration:(h.op.duration/3) });
+			new Effect.Move(h.fb, {
+				x: h.op.moveDistance, y: 0, mode: 'relative',
+				duration:h.op.duration,
+				transition: Effect.Transitions.sinoidal,
+				afterFinish:function() {
+					Event.stopObserving(ddiv);	
+					Element.remove(h.fb);
+				}
+			});
+			p.removeClassName('popup-attached');
+		}, h.op.hideTimeout);
 	};
+	
+	Event.observe(ddiv, 'mouseout', p.removePopup.bind(this))
+	Event.observe(ddiv, 'mouseover', function(){ 
+		if(p.tc){ 
+			clearInterval(p.tc)
+			return;
+		}
+	});
 
 	h.sp();
 
-	new Effect.Move(h.fb, { x:-200, mode:'relative', duration:0.01, afterFinish:function(){ 
+	new Effect.Move(h.fb, { x:-h.op.moveDistance, mode:'relative', duration:0.01, afterFinish:function(){ 
 		new Effect.Appear(h.fb, { duration:h.op.duration });
 		new Effect.Move(h.fb, {
-		  x: 200, y: 0, mode: 'relative',
+		  x: h.op.moveDistance, y: 0, mode: 'relative',
 		  duration:h.op.duration,
 		  transition: Effect.Transitions.sinoidal
 		});
 	} })
+
+	p.addClassName('popup-attached');
 
 	return h;
 
