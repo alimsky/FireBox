@@ -30,7 +30,7 @@ var merge = function (a, b, m) {
 var linkDropDown = function(select, options) { 
 	var h  = { },  // OLOLO, dont touch it please
 		dO = { 
-			linkClass: 'ajax-link',
+			linkClass: 'ajax-link dropdown-link',
 			animOptions : { duration:0.13 }
 		},
 		html,
@@ -42,6 +42,11 @@ var linkDropDown = function(select, options) {
 		ddiv; // little DOM shit
 
 	h.select = $(select);
+
+	if (h.select.fireselected) {
+		return;
+	}
+	h.select.fireselected=true;
 
 	//init options
 	h.op = options || { };		
