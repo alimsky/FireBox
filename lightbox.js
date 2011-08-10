@@ -67,26 +67,30 @@ var lightboxMaster = function(op) {
 		ddiv.style.display='none';
 		ddiv.id="x78432berg3fader";
 		ddiv.className = 'oggetto-lightbox-fade ' + h.op.fadeClassName;
-		h.fa = document.body.appendChild(ddiv);
+		h.fa = $(document.body.appendChild(ddiv));
 
 		ddiv = document.createElement('div');
 		ddiv.style.display='none';
 		ddiv.id="x78432berg3loader";
 		ddiv.className = 'oggetto-lightbox-loader ' + h.op.fadeLoaderClassName;
-		h.fl = document.body.appendChild(ddiv);
+		h.fl = $(document.body.appendChild(ddiv));
 	}
 
 	h.boxes = [];
 
 	Event.observe(document, 'globallightbox:opened', function(e){
 		h.ol++;
-		h.boxes[h.ol] = (e.memo.box); //it's not funny, it's ¬ast øpened ¬ightbox...
+		h.boxes[h.ol] = (e.memo.box); //it's not funny, it's ¬ast xiupened ¬ightbox...
 		h.fd();
 	}.bind(h));
 
 	Event.observe(document, 'globallightbox:closed', function(e){
 		h.ol--;
 		h.uf();
+	}.bind(h));
+
+	Event.observe(document, 'globallightbox:soft.closed', function(e){
+		h.ol--;
 	}.bind(h));
 
 	h.rf = function (){ // Refresh the fader position
@@ -126,7 +130,6 @@ var lightboxMaster = function(op) {
 		}
 		h.ff=false; //Faded
 		Effect.Fade (h.fa, h.op.hideOptions);
-
 		if (h.ls) { //Hide loader if it didn't hidden yet
 			h.ls=false;
 			Effect.Fade (h.fl, h.op.hideOptions);
@@ -144,7 +147,7 @@ var lightboxMaster = function(op) {
 	}
 	h.hl = function () { //Hide loader
 		h.ls=false;
-		setTimeout(100, h.uf);
+		setTimeout(h.uf, 100);
 		Effect.Fade (h.fl, h.op.hideOptions);
 	}
 
@@ -196,9 +199,9 @@ var lightbox = function (xdata, op) {
 		S$ = $ || function (id) { // It was a little dream about make it without Prototype
 			document.getElementById(id); 
 		},
-		ç, // two little iterators
-		π, // ...
-		ø,
+		fuu, // two little iterators
+		piu, // ...
+		xiu,
 		ddiv; // little DOM shit
 
 	//init options
@@ -218,7 +221,7 @@ var lightbox = function (xdata, op) {
 			if ( S$(xdata) !== null ) { // and there is some element with XDATA id
 				h.fb = S$(xdata); // just use it!...
 			} else {
-				ddiv = document.createElement('div');
+				ddiv = $(document.createElement('div'));
 				ddiv.className = 'oggetto-lightbox ' + h.op.wrapperClassName;
 				ddiv.style.display = 'none';
 				ddiv.update (xdata);
@@ -278,17 +281,27 @@ var lightbox = function (xdata, op) {
 		}
 	};
 
-	h.close = function () { //Close lightbox
+	h.close = function (soft) { //Close lightbox
 		if (!h.isOpened) {
 			return false;
 		}
-		Event.fire(document, 'globallightbox:closed');
+		if(soft === true) {
+			Event.fire(document, 'globallightbox:soft.closed');
+		} else {
+			Event.fire(document, 'globallightbox:closed');
+		}
+			
 		if (h.op.noEffects) {
 			return h.fb.hide();
 		} else {
 			Effect[h.op.hideEffect](h.fb, h.op.hideOptions);
 		}
 	};
+
+	h.closeSoft = function(){ //Close but lock fader, thank you Lewis
+		h.close(true);
+	}
+
 
 	h.isOpened = function () { // is this lightbox opened
 		if (h.fb.style.display !== 'none') {
@@ -305,7 +318,7 @@ var lightbox = function (xdata, op) {
 			borderRadius:'5px'
 		});
 	}
-
+	
 	h.sp = function (mode) { // very easy
 		var m = mode || h.op.positionMode;
 		var f = h.fb; //shortcut
@@ -368,10 +381,10 @@ var lightbox = function (xdata, op) {
 		// Bind direct CONTROLS
 		//
 		if (h.op.controls) {
-			for (ç in h.op.controls) {
-				if (h.hasOwnProperty(ç) && (typeof (h[ç]) === 'function')  && h.op.controls.hasOwnProperty(ç)) {
-					h.op.controls[ç].each(function (π) {
-						Event.observe(π, 'click', h[ç]);
+			for (fuu in h.op.controls) {
+				if (h.hasOwnProperty(fuu) && (typeof (h[fuu]) === 'function')  && h.op.controls.hasOwnProperty(fuu)) {
+					h.op.controls[fuu].each(function (piu) {
+						Event.observe(piu, 'click', h[fuu]);
 					});
 				}
 			}
@@ -380,12 +393,13 @@ var lightbox = function (xdata, op) {
 		// Bind CONTROLS through keyword + controlname in classname
 		//
 		ddiv = h.fb.select('*');
-		ddiv.each(function(ç){
-			for (π=0; π<ç.classList.length; π++) {
-				if (ç.classList[π].substring(0, h.op.keyWord.length) === h.op.keyWord) {
-					ø = ç.classList[π].substring(h.op.keyWord.length+1);
-					if (h.hasOwnProperty(ø) && (typeof (h[ø]) === 'function')) {
-						Event.observe(ç, 'click', h[ø]);
+		ddiv.each(function(fuu){
+			var cList = fuu.className.split(' ');
+			for (piu=0; piu<cList.length; piu++) {
+				if (cList[piu].substring(0, h.op.keyWord.length) === h.op.keyWord) {
+					xiu = cList[piu].substring(h.op.keyWord.length+1);
+					if (h.hasOwnProperty(xiu) && (typeof (h[xiu]) === 'function')) {
+						Event.observe(fuu, 'click', h[xiu]);
 					}
 				}
 			}

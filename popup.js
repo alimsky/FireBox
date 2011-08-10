@@ -55,9 +55,6 @@ var popupHang = function() {
 			hideTimeout:400,
 			moveDistance:40
 		},
-		ç, // two little iterators
-		π, // ...
-		ø,
 		p = this.el,
 		op = this.op,
 		xdata = this.xd,
@@ -77,7 +74,7 @@ var popupHang = function() {
 		if ( $(xdata) !== null ) { // and there is some element with XDATA id
 			h.fb = $(xdata); // just use it!...
 		} else {
-			ddiv = document.createElement('div');
+			ddiv = $(document.createElement('div'));
 			ddiv.className = 'oggetto-popup ' + h.op.wrapperClassName;
 			ddiv.style.display = 'none';
 			ddiv.update (xdata);

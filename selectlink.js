@@ -35,13 +35,17 @@ var linkDropDown = function(select, options) {
 		},
 		html,
 		ahtml,
-		ø,
+		dia,
 		anc,
 		ul,
 		lis,
 		ddiv; // little DOM shit
 
 	h.select = $(select);
+
+	if(!h.select || (h.select.tagName.toUpperCase() !=='SELECT')) { 
+		return;
+	}
 
 	if (h.select.fireselected) {
 		return;
@@ -52,9 +56,6 @@ var linkDropDown = function(select, options) {
 	h.op = options || { };		
 	h.op = merge(h.op, dO, true);
 
-	if(!h.select || (h.select.tagName.toUpperCase() !=='SELECT')) { 
-		return;
-	 }
 	h.select.setStyle({ 
 		position:'absolute',
 		top:'-150000px'
@@ -62,14 +63,14 @@ var linkDropDown = function(select, options) {
 	html='<div class="fireselect-container">';
 	html= html + '<a href="javascript:;" class="' + h.op.linkClass + '">' + h.select[h.select.selectedIndex].innerHTML + '</a>';
 	html=html + '<ul style="display:none;">';
-	for (ø=0; ø<h.select.options.length; ø++) { 
-		if (ø == select.selectedIndex) {  
+	for (dia=0; dia<h.select.options.length; dia++) { 
+		if (dia == h.select.selectedIndex) {  
 			ahtml = 'class="current"';
 		 } else { 
 			ahtml='';
 		  }
-		html=html + '<li ' + ahtml + ' onclick="return [\'' + h.select[ø].value + '\', \''+h.select[ø].innerHTML+'\', '+ ø +'];">'+ h.select[ø].innerHTML + '</li>'
-		//html= html + '<li>'+ h.select[ø].innerHTML + '</li>';
+		html=html + '<li ' + ahtml + ' onclick="return [\'' + h.select[dia].value + '\', \''+h.select[dia].innerHTML+'\', '+ dia +'];">'+ h.select[dia].innerHTML + '</li>'
+		//html= html + '<li>'+ h.select[dia].innerHTML + '</li>';
 	 }
 	html=html+'</ul></div>';
 	var t = h.select.insert({ 
