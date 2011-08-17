@@ -1,9 +1,4 @@
 /*
- *
- *
- *
- *
- *
  *___________.__              __________              ____ ___         
  *\_   _____/|__|______   ____\______   \____ ______ |    |   \______  
  * |    __)  |  \_  __ \_/ __ \|     ___/  _ \\____ \|    |   /\____ \ 
@@ -35,10 +30,23 @@ var popup = function (e, xdata, options) {
 	this.el=e;
 	this.xd=xdata;
 	this.op=options;
+	this.el.removePopup = function() { };
 	Event.observe(e, 'mouseover', popupHang.bind(this));
-	Event.observe(e, 'mouseout', function(){ 
-		e.removePopup()
-	});
+	Event.observe(e, 'mouseout', function(){ e.removePopup() });
+}
+
+if (!Effect) {
+	var Effect = {nn:true};
+	Effect.Appear = function(ob,op) {
+		$(ob).show();	
+	};
+	Effect.Fade = function(ob,op) {
+		$(ob).hide();	
+	};
+	Effect.Move = function(ob,op) {};
+	Effect.Transitions = {
+		sinoidal:''
+	}
 }
 var popupGlobal = {
 	z:10100
@@ -60,6 +68,10 @@ var popupHang = function() {
 		xdata = this.xd,
 		ddiv; // little DOM shit
 	
+	if(p.hasClassName('popup-attached')){
+		return;
+	}
+
 	if(p.tc) { 
 		clearInterval(p.tc);
 		return;
@@ -125,42 +137,60 @@ var popupHang = function() {
 
 		t.gw = p.getWidth();
 		t.gh = p.getHeight();
-		t.gx = p.cumulativeOffset()[0];
-		t.gy = p.cumulativeOffset()[1];
+		t.gx = p.positionedOffset()[0];
+		t.gy = p.positionedOffset()[1];
 
 		f.style.zIndex = ++popupGlobal.z;
 
 		switch (m) {
 			case 'right-center':
-				t.ny = t.gy+(t.gh/2) - (t.h/2);
+				t.ny = t.gy + (t.gh/2) - (t.h/2);
 				t.nx = t.gx - t.w - h.op.distance;
 				break;
+            case 'top-center':
+                t.nx = t.gx + (t.gw/2)- (t.w/2);
+                t.ny = t.gy - t.h - h.op.distance;
+                break;
 			default:
 				return;
 		}
+
 		f.setStyle({
 			position: 'absolute',
-			left: t.nx + 'px',
-			top: t.ny + 'px'
+			left: t.nx.toString() + 'px',
+			top: t.ny.toString() + 'px'
 		});
-
 		h.positioned=true;
 	};
 
 	p.removePopup = function(){ 
+		if(p.tc || !h.fb){
+			return;
+		}
 		p.tc = setTimeout(function() {
 			/* WARNING: DESTRUCT */
 			delete p.tc;
 			new Effect.Fade(h.fb, { duration:(h.op.duration/3) });
-			new Effect.Move(h.fb, {
-				x: h.op.moveDistance, y: 0, mode: 'relative',
-				duration:h.op.duration,
-				transition: Effect.Transitions.sinoidal,
-				afterFinish:function() {
-					Event.stopObserving(ddiv);	
-					Element.remove(h.fb);
-				}
-			});
+			if(!(Prototype.Browser.IE || Prototype.Browser.Opera || Effect.nn)) {
+				new Effect.Move(h.fb, {
+					x: h.op.moveDistance, y: 0, mode: 'relative',
+					duration:h.op.duration,
+					transition: Effect.Transitions.sinoidal,
+					afterFinish:function() {
+						Event.stopObserving(ddiv, 'mouseout');  
+						Event.stopObserving(ddiv, 'mouseover');  
+                        Element.remove(h.fb);
+						delete h.fb;
+					}
+				});
+			} else {
+				Event.stopObserving(ddiv, 'mouseout');  
+				Event.stopObserving(ddiv, 'mouseover');  
+				Element.remove(h.fb);
+				delete h.fb;
+			
+			}
+			
 			p.removeClassName('popup-attached');
 		}, h.op.hideTimeout);
 	};
@@ -169,20 +199,23 @@ var popupHang = function() {
 	Event.observe(ddiv, 'mouseover', function(){ 
 		if(p.tc){ 
 			clearInterval(p.tc)
-			return;
+			delete p.tc;
 		}
 	});
 
 	h.sp();
-
-	new Effect.Move(h.fb, { x:-h.op.moveDistance, mode:'relative', duration:0.01, afterFinish:function(){ 
+	if(!(Prototype.Browser.IE || Prototype.Browser.Opera || Effect.nn)) {
+		new Effect.Move(h.fb, { x:-h.op.moveDistance, mode:'relative', duration:0.01, afterFinish:function(){ 
+			new Effect.Appear(h.fb, { duration:h.op.duration });
+			new Effect.Move(h.fb, {
+			  x: h.op.moveDistance, y: 0, mode: 'relative',
+			  duration:h.op.duration,
+			  transition: Effect.Transitions.sinoidal
+			});
+		} });
+	} else {
 		new Effect.Appear(h.fb, { duration:h.op.duration });
-		new Effect.Move(h.fb, {
-		  x: h.op.moveDistance, y: 0, mode: 'relative',
-		  duration:h.op.duration,
-		  transition: Effect.Transitions.sinoidal
-		});
-	} })
+	}
 
 	p.addClassName('popup-attached');
 

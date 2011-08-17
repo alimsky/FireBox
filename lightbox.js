@@ -38,13 +38,12 @@ var merge = function (a, b, m) {
 var lightboxMaster = function(op) {
 	var h  = { },
 		dO = { // isn't it clear? d is default, and O is Options
-			fadeOpacity:0.5,
 			fadeClassName:'oggetto-lightbox-fade',
 			fadeLoaderClassName:'oggetto-lightbox-loader',
 			dontCloseOnEsc: false, // observe ESC button to autoclose LB (L is Light and B is Box)
 			noFade:false,
-			appearOptions:{},
-			hideOptions:{}
+			appearOptions:{ duration:0.4, to:0.5 },
+			hideOptions:{ duration:0.4 }
 		};
 	h.ol=0;
 	
@@ -81,6 +80,7 @@ var lightboxMaster = function(op) {
 	Event.observe(document, 'globallightbox:opened', function(e){
 		h.ol++;
 		h.boxes[h.ol] = (e.memo.box); //it's not funny, it's ¬ast xiupened ¬ightbox...
+		h.hl();
 		h.fd();
 	}.bind(h));
 
@@ -90,6 +90,7 @@ var lightboxMaster = function(op) {
 	}.bind(h));
 
 	Event.observe(document, 'globallightbox:soft.closed', function(e){
+		h.sl();
 		h.ol--;
 	}.bind(h));
 
@@ -119,9 +120,7 @@ var lightboxMaster = function(op) {
 		h.rf();
 
 		h.fa.setOpacity(0);
-		Effect.Appear(h.fa, { 
-			to:h.op.fadeOpacity
-		});
+		Effect.Appear(h.fa, h.op.appearOptions);
 	};
 
 	h.uf = function (){ //Unfade
@@ -205,7 +204,7 @@ var lightbox = function (xdata, op) {
 		ddiv; // little DOM shit
 
 	//init options
-	h.op = op || { };		
+	h.op = op || { };
 	h.op = merge(h.op, dO, true);
 
 	if (h.op.uid.length>0) { // Check if ID is ok

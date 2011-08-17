@@ -80,10 +80,11 @@ var linkDropDown = function(select, options) {
 	h.anc = ddiv.select('a')[0];
 	ul = ddiv.select('ul')[0];
 	lis = ddiv.select('ul li');
-
-	ddiv.setStyle({ 
-		position:'relative'
+	ddiv.setStyle({
+		position:'relative',
+        zIndex: linkDropDown.zIndexCounter
 	 })
+    linkDropDown.zIndexCounter--;
 	h.anc.setStyle({ 
 		position:'absolute'
 	 })
@@ -153,3 +154,4 @@ var linkDropDown = function(select, options) {
 	 });
 	document.observe('click', h.hd)
  }
+linkDropDown.zIndexCounter = 100;
