@@ -164,13 +164,13 @@ var lightboxMaster = function(op) {
 };
 
 //GLOBAL SCOPE ATTACK ATTENTIOOON!!!111
-Event.observe(document, 'dom:loaded', function(){
+Event.observe(window, 'load', function(){
 	window.lightboxMasterGlobal = new lightboxMaster();
 });
 
 
 /*
- * Хуй вам, а не комментарии.
+ * Huy vam a ne kommentarii
  *
  */
 var lightbox = function (xdata, op) {
@@ -267,13 +267,18 @@ var lightbox = function (xdata, op) {
 		}
 	};
 
+	h.observe = function(event, handler) {
+		h.fb.observe(event, handler);
+	}
+
 	h.open = function (reposition) { //Open Lightbox
 		h.sp();
 		if (h.isOpened()) {
 			return false;
 		}
 		Event.fire(document, 'globallightbox:opened', {box:h});
-		if (h.op.noEffects) {
+		h.fb.fire('lightbox:opened');
+		if (h.op.noEffects || Prototype.Browser.IE) {
 			return h.fb.show();
 		} else {
 			Effect[h.op.appearEffect](h.fb, h.op.appearOptions);
@@ -289,8 +294,9 @@ var lightbox = function (xdata, op) {
 		} else {
 			Event.fire(document, 'globallightbox:closed');
 		}
+		h.fb.fire('lightbox:closed');
 			
-		if (h.op.noEffects) {
+		if (h.op.noEffects || Prototype.Browser.IE) {
 			return h.fb.hide();
 		} else {
 			Effect[h.op.hideEffect](h.fb, h.op.hideOptions);

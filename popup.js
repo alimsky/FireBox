@@ -67,12 +67,12 @@ var popupHang = function() {
 		op = this.op,
 		xdata = this.xd,
 		ddiv; // little DOM shit
-	
+
 	if(p.hasClassName('popup-attached')){
 		return;
 	}
 
-	if(p.tc) { 
+	if(p.tcSet) { 
 		clearInterval(p.tc);
 		return;
 	}
@@ -164,12 +164,14 @@ var popupHang = function() {
 	};
 
 	p.removePopup = function(){ 
-		if(p.tc || !h.fb){
+		if(p.tcSet || !h.fb){
 			return;
 		}
+		p.tcSet=true;
 		p.tc = setTimeout(function() {
 			/* WARNING: DESTRUCT */
-			delete p.tc;
+			p.tcSet=false;
+			clearInterval(p.tc);
 			new Effect.Fade(h.fb, { duration:(h.op.duration/3) });
 			if(!(Prototype.Browser.IE || Prototype.Browser.Opera || Effect.nn)) {
 				new Effect.Move(h.fb, {
@@ -197,9 +199,9 @@ var popupHang = function() {
 	
 	Event.observe(ddiv, 'mouseout', p.removePopup.bind(this))
 	Event.observe(ddiv, 'mouseover', function(){ 
-		if(p.tc){ 
+		if(p.tcSet){ 
 			clearInterval(p.tc)
-			delete p.tc;
+			p.tcSet=false;
 		}
 	});
 
